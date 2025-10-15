@@ -1,0 +1,164 @@
+.layout {
+  background-color: rgb(148, 141, 133);
+  height: 100vh;
+}
+.login-navbar {
+  width: 100%;
+  background-color: rgba(175, 192, 193, 0.283);
+}
+
+.login-navbar h2 {
+  margin: 0;
+  padding: 25px 0 16px 30px;
+  font-size: xx-large;
+}
+
+.main-content {
+  margin-top: 50px;
+  margin-left: 160px;
+  display: flex;
+  /* align-items: center;*/
+  justify-content: flex-start;
+  gap: 160px;
+}
+
+.description-and-carasoul {
+    width: 50%;
+    display: flex;
+}
+.carasoul {
+  width: 500px;
+  height: 380px;
+  overflow: hidden;
+  border-radius: 10px;
+}
+.slides {
+  display: flex;
+  width: 100%;
+  animation: slide 8s infinite;
+}
+@keyframes slide {
+  0% {
+    transform: translateX(0);
+  }
+  20% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-100%);
+  }
+  45% {
+    transform: translateX(-100%);
+  }
+  50% {
+    transform: translateX(-200%);
+  }
+  70% {
+    transform: translateX(-200%);
+  }
+  75% {
+    transform: translateX(-300%);
+  }
+  95% {
+    transform: translateX(-300%);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+.carasoul .slides > img {
+  width: 500px;
+  height: 380px;
+}
+
+.login-or-register {
+    background-color: aliceblue;
+    border-radius: 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.login-form {
+    
+    
+    width: 330px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.login-form > h3 {
+    margin: 0;
+    font-size: xx-large;
+}
+.login-form, .inp-div {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.inp-div > .email-inp-div > #email-inp,.inp-div > .pass-inp-div > #pass-inp{
+    border: none;
+    background-color: bisque;
+    width: 240px;
+    height: 30px;
+    border-radius: 10px;
+}
+
+.login-form > .inp-div> #continue-btn {
+    width: 60%;
+    height: 30px;
+}
+
+
+.registration-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+/* align-items: center; */
+justify-content: center;
+/* max-width: fit-content; */
+}
+
+.registration-form {
+  padding: 15px 30px 15px 30px;
+}
+.registration-form > .registration-header{
+  display: flex;
+  gap: 10px;
+
+}
+
+.registration-header >button {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+.registration-option-btns{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 30px;
+
+}
+
+.registration-option-btns > button {
+  background-color: rgb(207, 210, 213);
+  border: none;
+  border-radius: 6px;
+  padding: 6px ;
+
+}
+
+
+.registration-option-btns > button.active {
+  background-color: rgb(121, 89, 120);
+  color: beige;
+}
+.register-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}

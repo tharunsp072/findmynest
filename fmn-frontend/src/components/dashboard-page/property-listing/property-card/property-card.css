@@ -1,0 +1,83 @@
+.property-info {
+    margin:20px 0 0 10px ;
+    width: 300px;
+    height: 300px; /* total height of card */
+    /* border: 1px solid black; */
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    background-color: aliceblue;
+    box-shadow: 2px 2px 2px 2px rgb(105, 103, 103);
+}
+
+.property-info > img {
+    width: 100%; 
+    height: auto; 
+    max-height: 180px; 
+    border-radius: 10px 10px 0 0 ;
+    object-fit: cover;
+}
+
+.info {
+    padding: 0px 0 0 10px;
+    display: flex;
+    flex-direction: column;
+    /* gap:6px; */
+    margin: 0;
+    /* align-items: flex-start; */
+}
+
+.info > p ,.info > button,.size-price>p{
+     margin: 0;
+}
+.size-price {
+    display: flex;
+    gap: 10px;
+}
+
+.desc-heart {   
+    display: flex;
+    justify-content: space-between;
+    margin: 0;
+   max-height: 40px;
+}
+
+
+#book {
+  background-color: rgb(90, 89, 89);  
+  border: none;
+  width: 20%;
+  padding: 5px 0 5px 0;
+  border-radius: 3px;
+  cursor: pointer;
+    transition: transform;
+    color: aliceblue;
+}
+
+#book:hover {
+    transform: translateY(2px);
+   transition: transform 0.2s ease; 
+   background-color: rgb(65, 65, 66);
+}
+
+
+.fav-btn {
+    width: max-content;
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+}
+
+.book-inquiry-btns {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    justify-content: center;
+
+}
+
+.book-inquiry-btns > button {
+     padding:4px 10px;
+     font-family:Verdana, Geneva, Tahoma, sans-serif;
+
+}

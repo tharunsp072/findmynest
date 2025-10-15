@@ -1,0 +1,37 @@
+    .payment-page {
+  padding: 2rem;
+  color: #333;
+  font-family: Arial, sans-serif;
+}
+
+h1 {
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+.payments-table {
+  width: 100%;
+  border-collapse: collapse;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+.payments-table th,
+.payments-table td {
+  border: 1px solid #ddd;
+  padding: 12px;
+  text-align: center;
+}
+
+.payments-table th {
+  background-color: #f4f4f4;
+  font-weight: bold;
+}
+
+.payments-table tr:nth-child(even) {
+  background-color: #fafafa;
+}
+
+.error {
+  color: red;
+  text-align: center;
+}

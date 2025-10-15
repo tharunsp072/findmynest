@@ -1,0 +1,74 @@
+.layout {
+   
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgb(184, 203, 197);
+  min-height: 89vh;
+}
+
+.add-form {
+     margin-top: 10px;
+  background-color: aliceblue;
+  width: 800px;
+  padding: 10px 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 20px 30px;
+}
+
+.add-form h1 {
+  grid-column: span 3;
+  text-align: center;
+  margin-bottom: 10px;
+  color: rgb(40, 60, 60);
+}
+
+.add-form div {
+  display: flex;
+  flex-direction: column;
+}
+
+.add-form label {
+  font-weight: 600;
+  margin-bottom: 5px;
+}
+
+.add-form input[type="text"],
+.add-form input[type="number"],
+.add-form input[type="file"] {
+  padding: 8px 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  outline: none;
+}
+
+.add-form input:focus {
+  border-color: rgb(100, 180, 160);
+}
+
+.full-width {
+  grid-column: span 2;
+}
+
+.submit-container {
+  grid-column: 2;
+  text-align: center;
+  /* margin-left: 50%; */
+}
+
+button {
+  background-color: rgb(70, 150, 120);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 10px 20px;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: rgb(55, 130, 105);
+}
