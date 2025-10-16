@@ -24,4 +24,12 @@ public class Inquiry {
     @ManyToOne
     @JoinColumn(name="tenantId")
     private TenantProfile tenant;
+
+    @Override
+    public String toString() {
+        return "Inquiry [inquiryId=" + inquiryId + ", message=" + message + ", inquiryDate=" + inquiryDate + ", status="
+                + status + "]";
+    }
+
+    
 }   

@@ -23,6 +23,9 @@ export namespace Components {
         "propertyId": string | number;
         "showForm": boolean;
     }
+    interface InquiryPage {
+        "role": string;
+    }
     interface LoginPage {
     }
     interface OwnerProperties {
@@ -95,6 +98,12 @@ declare global {
         prototype: HTMLInquiryFormElement;
         new (): HTMLInquiryFormElement;
     };
+    interface HTMLInquiryPageElement extends Components.InquiryPage, HTMLStencilElement {
+    }
+    var HTMLInquiryPageElement: {
+        prototype: HTMLInquiryPageElement;
+        new (): HTMLInquiryPageElement;
+    };
     interface HTMLLoginPageElement extends Components.LoginPage, HTMLStencilElement {
     }
     var HTMLLoginPageElement: {
@@ -143,6 +152,7 @@ declare global {
         "app-routes": HTMLAppRoutesElement;
         "dashboard-page": HTMLDashboardPageElement;
         "inquiry-form": HTMLInquiryFormElement;
+        "inquiry-page": HTMLInquiryPageElement;
         "login-page": HTMLLoginPageElement;
         "owner-properties": HTMLOwnerPropertiesElement;
         "payments-page": HTMLPaymentsPageElement;
@@ -170,6 +180,9 @@ declare namespace LocalJSX {
         "onCloseForm"?: (event: InquiryFormCustomEvent<void>) => void;
         "propertyId"?: string | number;
         "showForm"?: boolean;
+    }
+    interface InquiryPage {
+        "role"?: string;
     }
     interface LoginPage {
     }
@@ -203,6 +216,7 @@ declare namespace LocalJSX {
         "app-routes": AppRoutes;
         "dashboard-page": DashboardPage;
         "inquiry-form": InquiryForm;
+        "inquiry-page": InquiryPage;
         "login-page": LoginPage;
         "owner-properties": OwnerProperties;
         "payments-page": PaymentsPage;
@@ -221,6 +235,7 @@ declare module "@stencil/core" {
             "app-routes": LocalJSX.AppRoutes & JSXBase.HTMLAttributes<HTMLAppRoutesElement>;
             "dashboard-page": LocalJSX.DashboardPage & JSXBase.HTMLAttributes<HTMLDashboardPageElement>;
             "inquiry-form": LocalJSX.InquiryForm & JSXBase.HTMLAttributes<HTMLInquiryFormElement>;
+            "inquiry-page": LocalJSX.InquiryPage & JSXBase.HTMLAttributes<HTMLInquiryPageElement>;
             "login-page": LocalJSX.LoginPage & JSXBase.HTMLAttributes<HTMLLoginPageElement>;
             "owner-properties": LocalJSX.OwnerProperties & JSXBase.HTMLAttributes<HTMLOwnerPropertiesElement>;
             "payments-page": LocalJSX.PaymentsPage & JSXBase.HTMLAttributes<HTMLPaymentsPageElement>;

@@ -2,6 +2,8 @@
 
     import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
     import jakarta.persistence.*;
@@ -26,10 +28,20 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
         @ManyToOne(fetch = FetchType.EAGER)
         @JoinColumn(name = "ownerId")
-        @JsonIgnoreProperties({ "properties" })
+        @JsonIgnore
         private OwnerProfile owner;
         
         @OneToMany(mappedBy = "property", cascade = CascadeType.ALL, orphanRemoval = true)
-        @JsonIgnoreProperties({ "property", "tenant", "payments" })
+        @JsonBackReference
         private List<Booking> bookings;
+
+        @Override
+        public String toString() {
+            return "Property [propertyId=" + propertyId + ", title=" + title + ", description=" + description
+                    + ", price=" + price + ", address=" + address + ", status=" + status + ", carpetArea=" + carpetArea
+                    + ", ageOfBuilding=" + ageOfBuilding + ", furnishedStatus=" + furnishedStatus + ", imgUrl=" + imgUrl
+                    + "]";
+        }
+
+        
     }

@@ -33,4 +33,11 @@ public class OwnerProfile {
     @JsonIgnore
     private List<TenantProfile> tenants;
 
+    @Override
+    public String toString() {
+        return "OwnerProfile [ownerId=" + ownerId + ", fullname=" + fullname + ", contact_number=" + contact_number
+                + ", address=" + address + ", total_revenue=" + total_revenue + "]";
+    }
+
+    
 }

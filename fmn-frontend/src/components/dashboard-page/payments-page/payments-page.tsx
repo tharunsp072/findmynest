@@ -4,8 +4,8 @@ interface Payment {
   id: number;
   tenantName: string;
   propertyTitle: string;
-  actualRent: number;
-  paidRent: number;
+  price: number;
+  amount: number;
   paymentDate: string;
 }
 
@@ -25,16 +25,18 @@ export class PaymentsPage {
 
   async componentWillLoad() {
     let url = '';
-
-    if (this.role === 'owner') {
+    console.log(this.role);
+    if (this.role === 'OWNER') {
       url = `http://localhost:8080/payments/owner/${this.userId}`;
-    } else if (this.role === 'tenant') {
+    } else if (this.role === 'TENANT') {
       url = `http://localhost:8080/payments/tenant/${this.userId}`;
     }
-    console.log(url);
+    
 
     try {
       const token = localStorage.getItem('token');
+      console.log("url",url);
+      console.log("token from owner payment");
       const res = await fetch(url, {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -46,6 +48,7 @@ export class PaymentsPage {
       }
 
       this.payments = await res.json();
+      console.log(this.payments);
     } catch (err) {
       console.error('Error fetching payments:', err);
       this.error = 'Could not load payment data.';
@@ -77,8 +80,8 @@ export class PaymentsPage {
               <td>{index + 1}</td>
               <td>{p.tenantName}</td>
               <td>{p.propertyTitle}</td>
-              <td>₹{p.actualRent}</td>
-              <td>₹{p.paidRent}</td>
+              <td>₹{p.price}</td>
+              <td>₹{p.amount}</td>
               <td>{new Date(p.paymentDate).toLocaleDateString()}</td>
             </tr>
           ))}

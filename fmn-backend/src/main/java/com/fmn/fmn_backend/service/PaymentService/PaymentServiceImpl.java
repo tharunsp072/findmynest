@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.fmn.fmn_backend.dto.PaymentDTO;
 import com.fmn.fmn_backend.entity.Booking;
 import com.fmn.fmn_backend.entity.Payment;
 import com.fmn.fmn_backend.repository.BookingRepository;
@@ -31,12 +32,17 @@ public class PaymentServiceImpl implements PaymentService {
 
     @Override
     public List<Payment> getPaymentsByTenant(Long tenantId) {
+        System.out.println(paymentRepo.findByBooking_Tenant_TenantId(tenantId));
        return paymentRepo.findByBooking_Tenant_TenantId(tenantId);
     }
 
     @Override
-    public List<Payment> getPaymentsByOwner(Long ownerId) {
-        return paymentRepo.findByBooking_Property_Owner_OwnerId(ownerId);
+    public List<PaymentDTO> getPaymentsByOwner(Long ownerId) {
+        List<Payment> payments = paymentRepo.findByBooking_Property_Owner_OwnerId(ownerId);
+
+        return payments.stream()
+                .map(PaymentDTO::new) 
+                .toList();
     }
-    
+
 }

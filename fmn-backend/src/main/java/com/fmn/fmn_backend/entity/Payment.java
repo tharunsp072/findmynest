@@ -2,6 +2,7 @@ package com.fmn.fmn_backend.entity;
 
 import java.time.LocalDate;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import jakarta.annotation.Generated;
@@ -27,8 +28,16 @@ public class Payment {
     private String paymentStatus;
 
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name="bookingId")
-    @JsonIgnoreProperties({"payments", "property", "tenant"})
+    @JsonIgnore
     private Booking booking;
+
+
+    @Override
+    public String toString() {
+        return "Payment [paymentId=" + paymentId + ", paymentDate=" + paymentDate + ", amount=" + amount
+                + ", paymentMode=" + paymentMode + ", paymentStatus=" + paymentStatus + "]";
+    }
+    
 }

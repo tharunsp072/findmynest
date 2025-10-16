@@ -58,4 +58,10 @@ public class BookingServiceImpl implements BookingService {
  
         return bookingRepo.save(booking);
     }
+
+    @Override
+    public List<Booking> findBookingsByOwnerId(Long ownerId){
+
+        return bookingRepo.findByProperty_Owner_OwnerId(ownerId);
+    }
 }

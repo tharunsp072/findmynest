@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.fmn.fmn_backend.dto.PaymentDTO;
 import com.fmn.fmn_backend.entity.Payment;
 import com.fmn.fmn_backend.service.PaymentService.PaymentService;
 
@@ -40,7 +41,8 @@ public class PaymentController {
     }
 
     @GetMapping("/owner/{ownerId}")
-    public List<Payment> getOwnerPayments(@PathVariable Long ownerId) {
+    public List<PaymentDTO> getOwnerPayments(@PathVariable Long ownerId) {
+        
         return paymentService.getPaymentsByOwner(ownerId);
     }
 }

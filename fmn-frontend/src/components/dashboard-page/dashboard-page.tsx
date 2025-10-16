@@ -67,6 +67,7 @@ export class DashboardPage {
           {this.currentView === 'favorites' && <tenant-favorites></tenant-favorites>}
           {this.currentView === 'profile' && this.userid != null && <user-profile user={this.userid} role={this.userRole}></user-profile>}
           {(this.currentView === 'owner-payments' || this.currentView === 'payments') && <payments-page role={this.userRole} userId={this.userid}></payments-page>}
+          {(this.currentView === 'owner-inquires' || this.currentView === 'inquiries') && <inquiry-page role={this.userRole}></inquiry-page>}
         </main>
       </div>
     );

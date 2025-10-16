@@ -1,4 +1,4 @@
-import { Component, h } from '@stencil/core';
+import { Component, h} from '@stencil/core';
 import '@stencil/router';
 @Component({
   tag: 'app-routes',

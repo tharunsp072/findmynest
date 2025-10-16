@@ -32,6 +32,16 @@ public class TenantProfile {
     @JoinColumn(name = "owner_id")
     @JsonIgnoreProperties({ "properties" })
     private OwnerProfile owner;
+
+    @Override
+    public String toString() {
+      return "TenantProfile [tenantId=" + tenantId
+          + ", username=" + username
+          + ", contact_number=" + contact_number
+          + ", preferences=" + preferences
+          + ", userId=" + (user != null ? user.getUserId() : null)
+          + ", ownerId=" + (owner != null ? owner.getOwnerId() : null) + "]";
+    }
     
 
 
