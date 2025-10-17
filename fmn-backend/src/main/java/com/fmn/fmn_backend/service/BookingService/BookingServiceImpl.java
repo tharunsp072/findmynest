@@ -1,18 +1,27 @@
 package com.fmn.fmn_backend.service.BookingService;
 
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.fmn.fmn_backend.dto.PaymentDTO;
+import com.fmn.fmn_backend.dto.BookingDTO.BookingDTO;
+import com.fmn.fmn_backend.dto.BookingDTO.BookingResponseDTO;
+import com.fmn.fmn_backend.dto.PropertyDTO.PropertyDTO;
+import com.fmn.fmn_backend.dto.TenantDTO.TenantDTO;
 import com.fmn.fmn_backend.entity.Booking;
 import com.fmn.fmn_backend.entity.OwnerProfile;
+import com.fmn.fmn_backend.entity.Payment;
 import com.fmn.fmn_backend.entity.Property;
 import com.fmn.fmn_backend.entity.TenantProfile;
+import com.fmn.fmn_backend.model.AvailableStatus;
 import com.fmn.fmn_backend.model.BookingStatus;
 import com.fmn.fmn_backend.repository.BookingRepository;
 import com.fmn.fmn_backend.repository.PropertyRepository;
 import com.fmn.fmn_backend.repository.TenantRepository;
+import com.fmn.fmn_backend.service.PaymentService.PaymentFactory;
 
 @Service
 public class BookingServiceImpl implements BookingService {
@@ -26,42 +35,142 @@ public class BookingServiceImpl implements BookingService {
     @Autowired
     private TenantRepository tenantRepo;
 
-    @Override
-    public List<Booking> findAllBookings() {
-        return bookingRepo.findAll();
-    }
+    @Autowired
+    private PaymentFactory paymentFactory;
+
+@Override
+public List<BookingResponseDTO> findAllBookings() {
+    return bookingRepo.findAll().stream()
+        .map(booking -> {
+            BookingResponseDTO dto = new BookingResponseDTO();
+            dto.setBookingId(booking.getBookingId());
+            dto.setStartDate(booking.getStartDate());
+            dto.setEndDate(booking.getEndDate());
+            dto.setStatus(booking.getStatus().name());
+            dto.setProperty(new PropertyDTO(booking.getProperty()));
+            dto.setTenant(new TenantDTO(booking.getTenant()));
+            dto.setPayments(booking.getPayments().stream()
+                .map(payment -> new PaymentDTO(payment))
+                .toList());
+            return dto;
+        })
+        .toList();
+}
+
 
     @Override
-    public Booking saveBooking(Long tenantId, Long propertyId, Booking booking) throws Exception {
-
+    public BookingResponseDTO saveBooking(Long tenantId, Long propertyId, BookingDTO bookingDTO) {
         TenantProfile tenant = tenantRepo.findById(tenantId)
-                .orElseThrow(() -> new Exception("Tenant not found"));
-
+                .orElseThrow(() -> new RuntimeException("Tenant not found"));
         Property property = propertyRepo.findById(propertyId)
-                .orElseThrow(() -> new Exception("Property not found"));
+                .orElseThrow(() -> new RuntimeException("Property not found"));
 
-
-        boolean isBooked = bookingRepo.existsByProperty_PropertyIdAndStatus(
-                property.getPropertyId(),
-                BookingStatus.CONFIRMED);
-
-        if (isBooked) {
-            throw new Exception("Property is already booked.");
-        }
+        boolean isBooked = bookingRepo.existsByProperty_PropertyIdAndStatus(propertyId, BookingStatus.CONFIRMED);
+        if (isBooked)
+            throw new RuntimeException("Property is already booked.");
 
         OwnerProfile owner = property.getOwner();
+        Booking booking = new Booking();
         booking.setTenant(tenant);
         booking.setProperty(property);
         booking.setOwnerProfile(owner);
+        booking.setStartDate(bookingDTO.getStartDate());
+        booking.setEndDate(bookingDTO.getEndDate());
         booking.setStatus(BookingStatus.PENDING);
 
- 
-        return bookingRepo.save(booking);
+        long months = ChronoUnit.MONTHS.between(bookingDTO.getStartDate(), bookingDTO.getEndDate());
+        if (months <= 0)
+            months = 1;
+        List<Payment> payments = paymentFactory.createMonthlyPayments(
+                booking,
+                null,
+                (int) months,
+                property.getPrice());
+
+        booking.setPayments(payments);
+        System.out.println(booking);
+        bookingRepo.save(booking);
+        BookingResponseDTO dto = new BookingResponseDTO();
+        dto.setBookingId(booking.getBookingId());
+        dto.setStartDate(booking.getStartDate());
+        dto.setEndDate(booking.getEndDate());
+        dto.setStatus(booking.getStatus().name());
+        dto.setProperty(new PropertyDTO(booking.getProperty()));
+        dto.setTenant(new TenantDTO(booking.getTenant()));
+
+        return dto;
     }
 
     @Override
-    public List<Booking> findBookingsByOwnerId(Long ownerId){
+    public List<BookingResponseDTO> findBookingsByOwnerId(Long ownerId) {
+    List<BookingResponseDTO> dtor =  bookingRepo.findByProperty_Owner_OwnerId(ownerId).stream()
+        .map(booking -> {
+            BookingResponseDTO dto = new BookingResponseDTO();
+            dto.setBookingId(booking.getBookingId());
+            dto.setStartDate(booking.getStartDate());
+            dto.setEndDate(booking.getEndDate());
+            dto.setStatus(booking.getStatus().name());
+            dto.setProperty(new PropertyDTO(booking.getProperty()));
+            dto.setTenant(new TenantDTO(booking.getTenant()));
+            dto.setPayments(booking.getPayments().stream()
+                    .map(payment -> new PaymentDTO(payment))
+                    .toList());
+            return dto;     
+        })
+        .toList();
+        System.out.println(dtor);
+        return dtor;
+}
 
-        return bookingRepo.findByProperty_Owner_OwnerId(ownerId);
+
+    @Override
+    public Booking updateBookingStatus(Long ownerId, Long bookingId, String status) {
+        Booking booking = bookingRepo.findById(bookingId).orElseThrow(() -> new RuntimeException("Booking not found"));
+        
+        BookingStatus newStatus;
+        try {
+            newStatus = BookingStatus.valueOf(status.toUpperCase());
+        } catch (IllegalArgumentException e) {
+            throw new RuntimeException("Invalid  booking status: " + status);
+        }
+        Property property = propertyRepo.findByBookingsBookingId(bookingId);
+        if(newStatus == BookingStatus.CONFIRMED){
+            property.setStatus(AvailableStatus.Booked);
+        } else {
+            property.setStatus(AvailableStatus.Available);
+        }
+        booking.setStatus(newStatus);
+        System.out.println("Updated Booking : " + booking);
+        return bookingRepo.save(booking);
+
     }
+
+
+    @Override
+    public void deleteExistingBooking(Long ownerId, Long bookingId) {
+       bookingRepo.deleteById(bookingId);
+    }
+
+
+    @Override
+    public List<BookingResponseDTO> findBookingsByTenantId(Long tenantId) {
+        List<BookingResponseDTO> dtor = bookingRepo.findByTenantTenantId(tenantId).stream()
+                .map(booking -> {
+                    BookingResponseDTO dto = new BookingResponseDTO();
+                    dto.setBookingId(booking.getBookingId());
+                    dto.setStartDate(booking.getStartDate());
+                    dto.setEndDate(booking.getEndDate());
+                    dto.setStatus(booking.getStatus().name());
+                    dto.setProperty(new PropertyDTO(booking.getProperty()));
+                    dto.setTenant(new TenantDTO(booking.getTenant()));
+                    dto.setPayments(booking.getPayments().stream()
+                            .map(payment -> new PaymentDTO(payment))
+                            .toList());
+                    return dto;
+                })
+                .toList();
+        System.out.println(dtor);
+        return dtor;
+    }
+
 }

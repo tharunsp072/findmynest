@@ -148,7 +148,7 @@ public class OwnerServiceImpl implements OwnerService {
     int totalProperties = propertyRepo.findByOwner_OwnerId(ownerId).size();
     int totalBookings = bookingRepo.findByProperty_Owner_OwnerId(ownerId).size();
     Double totalRevenue = paymentRepo.findByBooking_Property_Owner_OwnerId(ownerId)
-            .stream().mapToDouble(Payment::getAmount).sum();
+            .stream().mapToDouble(Payment::getPaidAmount).sum();
 
     stats.put("totalProperties", totalProperties);
     stats.put("totalBookings", totalBookings);

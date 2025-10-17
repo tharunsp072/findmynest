@@ -60,7 +60,7 @@ export class DashboardPage {
         )}
         <main>
           {this.currentView === 'home' && <property-listing user={this.userid}></property-listing>}
-          {this.currentView === 'my-properties' && this.userid != null && <owner-properties user={this.userid}></owner-properties>}
+          {this.currentView === 'my-properties' && this.userid != null && <owner-properties user={this.userid} onChangeNav={(e:CustomEvent<string>)=>this.handleNavChange(e)}></owner-properties>}
           {this.currentView === 'add-property' && this.userid != null && (
             <add-property-form user={this.userid} onPageRender={(e: CustomEvent<string>) => this.handleNavChange(e)}></add-property-form>
           )}

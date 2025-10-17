@@ -12,6 +12,13 @@
 | `user`   | `user`    |             | `number` | `undefined` |
 
 
+## Events
+
+| Event       | Description | Type                  |
+| ----------- | ----------- | --------------------- |
+| `changeNav` |             | `CustomEvent<string>` |
+
+
 ## Dependencies
 
 ### Used by
@@ -29,6 +36,7 @@ graph TD;
   owner-properties --> property-listing
   owner-properties --> add-property-form
   property-listing --> property-card
+  property-card --> inquiry-form
   dashboard-page --> owner-properties
   style owner-properties fill:#f9f,stroke:#333,stroke-width:4px
 ```

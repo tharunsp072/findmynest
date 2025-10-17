@@ -11,6 +11,12 @@ export class OwnerProperties {
   @State() properties: Property[] = [];
   @State() showAddModal = false;
   @Prop() user :number;
+
+  @Event() changeNav : EventEmitter<string>;
+
+  handleChangeNav (nav : string){
+    this.changeNav.emit(nav);
+  }
   // decodeToken(token: string) {
   //   try {
   //     const payload = token.split('.')[1];
@@ -56,7 +62,7 @@ export class OwnerProperties {
         {this.properties.length === 0 && (
           <div class="no-properties">
             <h1>No properties Listed</h1>
-            <button onClick={() => (this.showAddModal = true)}>Add New Property</button>
+            <button class="add-btn" onClick={()=>this.handleChangeNav('add-property')}>Add New Property</button>
           </div>
         )}
 

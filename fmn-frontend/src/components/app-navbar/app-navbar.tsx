@@ -59,12 +59,6 @@ export class AppNavBar {
               </li>
             )}
 
-            {this.role !== 'OWNER' && (
-              <li class={this.activeMenu === 'favorites' ? 'active' : ''} onClick={() => this.handleNavClick('favorites')}>
-                Favorites
-              </li>
-            )}
-
             {this.role === 'OWNER' && <li onClick={() => this.handleNavClick('owner-payments')}>Payments Received</li>}
             {this.role === 'OWNER' && <li onClick={() => this.handleNavClick('owner-inquires')}>Inquiries</li>}
 
@@ -73,6 +67,9 @@ export class AppNavBar {
 
             <li class={this.activeMenu === 'profile' ? 'active' : ''} onClick={() => this.handleNavClick('profile')}>
               Profile
+            </li>
+            <li class={this.activeMenu === 'favorites' ? 'active' : ''} onClick={() => this.handleNavClick('favorites')}>
+              ❤️
             </li>
           </ul>
 

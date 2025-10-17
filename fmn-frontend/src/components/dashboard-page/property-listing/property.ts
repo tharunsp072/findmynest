@@ -9,4 +9,5 @@ export interface Property {
     availableStatus :string;
     furnishedStatus : string;
     imgUrl : string;
+    booked?:boolean;
 }

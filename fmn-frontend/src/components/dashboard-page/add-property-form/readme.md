@@ -13,6 +13,13 @@
 | `user`   | `user`    |             | `number` | `undefined` |
 
 
+## Events
+
+| Event        | Description | Type                  |
+| ------------ | ----------- | --------------------- |
+| `pageRender` |             | `CustomEvent<string>` |
+
+
 ## Dependencies
 
 ### Used by

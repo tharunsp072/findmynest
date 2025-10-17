@@ -5,7 +5,7 @@ interface Payment {
   tenantName: string;
   propertyTitle: string;
   price: number;
-  amount: number;
+  paidAmount: number;
   paymentDate: string;
 }
 
@@ -61,7 +61,7 @@ export class PaymentsPage {
     if (this.loading) return <p>Loading payment data...</p>;
     if (this.error) return <p class="error">{this.error}</p>;
     if (!this.payments.length) return <p>No payments found.</p>;
-
+    console.log(this.payments);
     return (
       <table class="payments-table">
         <thead>
@@ -81,7 +81,7 @@ export class PaymentsPage {
               <td>{p.tenantName}</td>
               <td>{p.propertyTitle}</td>
               <td>₹{p.price}</td>
-              <td>₹{p.amount}</td>
+              <td>₹{p.paidAmount}</td>
               <td>{new Date(p.paymentDate).toLocaleDateString()}</td>
             </tr>
           ))}

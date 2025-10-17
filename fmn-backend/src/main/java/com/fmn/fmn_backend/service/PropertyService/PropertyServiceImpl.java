@@ -5,7 +5,9 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.fmn.fmn_backend.dto.PropertyDTO.PropertyDTO;
 import com.fmn.fmn_backend.entity.Property;
+import com.fmn.fmn_backend.model.AvailableStatus;
 import com.fmn.fmn_backend.repository.PropertyRepository;
 
 @Service
@@ -29,10 +31,10 @@ public class PropertyServiceImpl implements PropertyService {
         return propertyRepo.findAllByAddress(address);
     }
 
-    @Override
-    public List<Property> findByStatus(String status) {
-        return propertyRepo.findAllByStatus(status);
-    }
+    // @Override
+    // public List<Property> findByStatus(String status) {
+    //     return propertyRepo.findAllByStatus(status);
+    // }
 
     @Override
     public List<Property> findByAgeOfBuilding(int age) {
@@ -42,7 +44,17 @@ public class PropertyServiceImpl implements PropertyService {
     @Override
     public Property findPropertyById(Long propertyId) {
         return propertyRepo.findById(propertyId)
-                .orElse(null); // or throw exception if preferred
+                .orElse(null); 
     }
+
+    @Override
+    public List<PropertyDTO> findAllNotConfirmedProperties() {
+        List<Property> properties = propertyRepo.findAllByStatus(AvailableStatus.Available);
+        return properties.stream()
+                .map(PropertyDTO::new)
+                .toList();
+    }
+
+    
 
 }

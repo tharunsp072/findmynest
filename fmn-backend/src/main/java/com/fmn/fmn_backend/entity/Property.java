@@ -5,8 +5,11 @@
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fmn.fmn_backend.model.AvailableStatus;
+import com.fmn.fmn_backend.model.BookingStatus;
 
-    import jakarta.persistence.*;
+import jakarta.persistence.*;
     import lombok.Data;
 
     @Entity
@@ -18,9 +21,10 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
         private Long propertyId;
         private String title;
         private String description;
-        private int price;
+        private double price;
         private String address;
-        private String status;
+        @Enumerated(EnumType.STRING)
+        private AvailableStatus status;
         private int carpetArea;
         private int ageOfBuilding;
         private String furnishedStatus;
@@ -28,11 +32,11 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
         @ManyToOne(fetch = FetchType.EAGER)
         @JoinColumn(name = "ownerId")
-        @JsonIgnore
+        @JsonBackReference
         private OwnerProfile owner;
         
         @OneToMany(mappedBy = "property", cascade = CascadeType.ALL, orphanRemoval = true)
-        @JsonBackReference
+        @JsonIgnore
         private List<Booking> bookings;
 
         @Override

@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.fmn.fmn_backend.dto.PaymentDTO;
 import com.fmn.fmn_backend.entity.Booking;
 import com.fmn.fmn_backend.entity.Payment;
+import com.fmn.fmn_backend.model.PaymentStatus;
 import com.fmn.fmn_backend.repository.BookingRepository;
 import com.fmn.fmn_backend.repository.PaymentRepository;
 
@@ -26,7 +27,7 @@ public class PaymentServiceImpl implements PaymentService {
                 .orElseThrow(() -> new Exception("Booking not found"));
 
         payment.setBooking(booking);
-        payment.setPaymentStatus("SUCCESS");
+        payment.setPaymentStatus(PaymentStatus.PAID);
         return paymentRepo.save(payment);
     }
 

@@ -36,6 +36,7 @@ export namespace Components {
         "userId": number;
     }
     interface PropertyCard {
+        "bookingStatus": boolean;
         "propertys": Property;
         "role": string;
     }
@@ -62,6 +63,10 @@ export interface AppNavbarCustomEvent<T> extends CustomEvent<T> {
 export interface InquiryFormCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLInquiryFormElement;
+}
+export interface OwnerPropertiesCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLOwnerPropertiesElement;
 }
 export interface PropertyCardCustomEvent<T> extends CustomEvent<T> {
     detail: T;
@@ -187,6 +192,7 @@ declare namespace LocalJSX {
     interface LoginPage {
     }
     interface OwnerProperties {
+        "onChangeNav"?: (event: OwnerPropertiesCustomEvent<string>) => void;
         "user"?: number;
     }
     interface PaymentsPage {
@@ -194,6 +200,7 @@ declare namespace LocalJSX {
         "userId"?: number;
     }
     interface PropertyCard {
+        "bookingStatus"?: boolean;
         "onAddToFavorites"?: (event: PropertyCardCustomEvent<{ favorite: boolean; property: Property }>) => void;
         "onBooking"?: (event: PropertyCardCustomEvent<{ booked: boolean; property: Property }>) => void;
         "propertys": Property;

@@ -13,6 +13,8 @@ export class PropertyListing {
   @State() showBookingDialog: boolean = false;
   @State() startDate: string = '';
   @State() endDate: string = '';
+  // @State() selectedPaymentMode : string = '';
+  @State() bookProperty: boolean;
 
   @Prop() listingProperties?: Property[] = [];
   @Prop() source?: string;
@@ -23,6 +25,7 @@ export class PropertyListing {
       this.properties = this.listingProperties?.length ? this.listingProperties : [];
     } else {
       this.properties = await this.fetchAllProperties();
+      console.log(this.properties);
     }
   }
 
@@ -34,7 +37,7 @@ export class PropertyListing {
   fetchAllProperties = async () => {
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch('http://localhost:8080/properties/findAll', {
+      const response = await fetch('http://localhost:8080/properties/findNotConfirmed', {
         headers: {
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json',
@@ -69,7 +72,6 @@ export class PropertyListing {
         this.properties = oldProperties;
         throw new Error(`Failed to delete property. Status: ${response.status}`);
       }
-
       console.log(`Property ${propertyId} deleted successfully`);
     } catch (err) {
       console.error(err);
@@ -99,25 +101,35 @@ export class PropertyListing {
       return;
     }
 
+    if (!this.selectedProperty?.propertyId) {
+      alert('Property ID is missing');
+      return;
+    }
+
     try {
       console.log(localStorage.getItem('token'));
 
       const token = localStorage.getItem('token');
-      const tenantId = Number(localStorage.getItem('profileId'))
-     const response = await fetch(`http://localhost:8080/bookings/saveBooking/${tenantId}/property/${this.selectedProperty.propertyId}`, {
-  method: 'POST',
-  headers: {
-    'Authorization': `Bearer ${token}`,
-    'Content-Type': 'application/json',
-  },
-  body: JSON.stringify({
-    startDate: this.startDate,
-    endDate: this.endDate,
-  }),
+      const tenantId = Number(localStorage.getItem('profileId'));
+      const response = await fetch(`http://localhost:8080/bookings/saveBooking/${tenantId}/property/${this.selectedProperty.propertyId}`, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          startDate: this.startDate,
+          endDate: this.endDate,
+        }),
       });
 
-      if (!response.ok) throw new Error(`Failed to Book property. Status: ${response.status}`);
-      alert('Property booked successfully!');
+      if (!response.ok) {
+        throw new Error(`Failed to Book property. Status: ${response.status}`);
+      } else {
+        this.handleBookingStatus(this.selectedProperty.propertyId);
+      }
+      // alert('Property booked successfully!');
+
       this.closeDialog();
     } catch (err) {
       console.error(err);
@@ -125,6 +137,10 @@ export class PropertyListing {
     }
   }
 
+  handleBookingStatus(propertyId: string) {
+    
+    this.properties = this.properties.map(p => (p.propertyId === propertyId ? { ...p, booked: true } : p));
+  }
   renderBookingDialog() {
     if (!this.showBookingDialog || !this.selectedProperty) return null;
 
@@ -157,7 +173,12 @@ export class PropertyListing {
       <div class="property-listing">
         {this.properties.map(property => (
           <div class={`${this.source}-property-item`}>
-            <property-card role={this.source} propertys={property} onBooking={(e: CustomEvent<{ booked: boolean; property: Property }>) => this.handleBookingEvent(e)} />
+            <property-card
+              role={this.source}
+              propertys={property}
+              onBooking={(e: CustomEvent<{ booked: boolean; property: Property }>) => this.handleBookingEvent(e)}
+              bookingStatus={property.booked}
+            />
 
             {this.source === 'owner' && this.user && <button onClick={e => this.handleDeleteProperty(e, property.propertyId, this.user)}>❌</button>}
           </div>

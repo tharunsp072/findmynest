@@ -1,6 +1,6 @@
 import { Component, h, Prop, Event, EventEmitter, State } from '@stencil/core';
 import { Property } from '../property';
-import { InquiryForm } from '../inquiry-form/inquiry-form';
+
 
 @Component({
   tag: 'property-card',
@@ -9,9 +9,10 @@ import { InquiryForm } from '../inquiry-form/inquiry-form';
 })
 export class PropertyCard {
   @Prop() propertys!: Property;
-  @Prop() role : string;
+  @Prop() role: string;
+  @Prop() bookingStatus : boolean;
 
-  @State() showInquiryForm : boolean=false;
+  @State() showInquiryForm: boolean = false;
   @State() booked: boolean = false;
   @State() favorite: boolean = false;
 
@@ -20,6 +21,7 @@ export class PropertyCard {
 
   handleBooking = (e: Event) => {
     e.preventDefault();
+    console.log('Booking event triggered for:', this.propertys);
     this.booked = !this.booked;
     this.booking.emit({ booked: this.booked, property: this.propertys });
   };
@@ -30,12 +32,12 @@ export class PropertyCard {
     this.addToFavorites.emit({ favorite: this.favorite, property: this.propertys });
   };
 
-  componentWillLoad(){
+  componentWillLoad() {
     console.log(this.role);
     console.log(this.propertys);
   }
 
-  handleShowInquiry(){
+  handleShowInquiry() {
     this.showInquiryForm = !this.showInquiryForm;
   }
   render() {
@@ -65,7 +67,7 @@ export class PropertyCard {
               {this.role !== 'owner' && (
                 <div class="book-inquiry-btns">
                   <button onClick={this.handleBooking} class={`book-btn ${this.booked ? 'booked' : ''}`}>
-                    {this.booked ? 'Booked' : 'Book'}
+                    {this.bookingStatus ? 'Booked' : 'Book'}
                   </button>
                   {/* Favorite button */}
                   <button onClick={() => this.handleShowInquiry()}>Inquiry</button>

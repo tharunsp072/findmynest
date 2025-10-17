@@ -3,7 +3,7 @@
     height: 100vh;
     width:100%;
     box-sizing: border-box;
-    background-color: rgb(171, 199, 190);
+    background-color: hsl(161, 20%, 73%);
     display: grid;
     grid-template-columns:  repeat(auto-fill,315px);
     overflow-x: hidden;

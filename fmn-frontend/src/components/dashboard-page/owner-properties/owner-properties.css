@@ -7,7 +7,7 @@
     position: absolute;
     top: 130px;
     left:420px;
-    width: 300px;
+    width: 360px;
     height: 150px;
     display: flex;
     flex-direction: column;
@@ -15,7 +15,26 @@
     justify-content: center;
 }
 
+.no-properties h1 {
+  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
+.add-btn {
+  color: aliceblue;
+  background-color: rgb(109, 77, 138);
+  border: none;
+  padding: 10px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-family: 'Times New Roman', Times, serif;
+    transition: all 0.3s ease;
+}
 
+.add-btn:hover {
+  color: rgba(3, 65, 222, 0.699);
+  background-color: rgb(211, 208, 205);
+  transform: scale(1.1);
+
+}
 .modal-overlay {
   position: fixed;
   inset: 0;
@@ -38,4 +57,5 @@
     position: absolute;
     bottom: 40px;
     left: 590px;
+    background-color: blueviolet;
 }

@@ -29,6 +29,7 @@
 ```mermaid
 graph TD;
   property-listing --> property-card
+  property-card --> inquiry-form
   dashboard-page --> property-listing
   owner-properties --> property-listing
   style property-listing fill:#f9f,stroke:#333,stroke-width:4px

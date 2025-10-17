@@ -73,7 +73,7 @@ export class AddPropertyForm {
   render() {
     return (
       <div class="layout">
-        <form onSubmit={e => this.handleAdd(e)} class="add-form" action="/my-listings" enctype="multipart/form-data">
+        <form onSubmit={e => this.handleAdd(e)} class="add-form" action="/my-listings">
           <h1>Add New Property</h1>
 
           <div>

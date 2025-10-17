@@ -1,164 +1,323 @@
+/* ==== GLOBAL LAYOUT ==== */
 .layout {
-  background-color: rgb(148, 141, 133);
-  height: 100vh;
+  min-height: 100vh;
+ background: linear-gradient(135deg, hsl(161, 20%, 73%) 0%, hsl(161, 25%, 83%) 100%);
+  flex-direction: column;
+  font-family: 'Poppins', sans-serif;
 }
+
+/* ==== NAVBAR ==== */
 .login-navbar {
   width: 100%;
-  background-color: rgba(175, 192, 193, 0.283);
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(6px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
 .login-navbar h2 {
   margin: 0;
-  padding: 25px 0 16px 30px;
-  font-size: xx-large;
+  padding: 22px 0 16px 40px;
+  font-size: 2rem;
+  color: #343a40;
+  font-weight: 600;
+  letter-spacing: 1px;
+  font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
 }
 
+/* ==== MAIN CONTENT ==== */
 .main-content {
-  margin-top: 50px;
-  margin-left: 160px;
+  flex: 1;
   display: flex;
-  /* align-items: center;*/
-  justify-content: flex-start;
-  gap: 160px;
+  justify-content: space-evenly;
+  align-items: center;
+  padding: 50px;
+  flex-wrap: wrap;
+  gap: 50px;
 }
 
+/* ==== DESCRIPTION + CAROUSEL ==== */
 .description-and-carasoul {
-    width: 50%;
-    display: flex;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 500px;
+  color: #2e2e2e;
+  text-align: justify;
+  line-height: 1.6;
 }
+
+.description-and-carasoul .description {
+  margin-top: 25px;
+  padding: 15px;
+  background: rgba(255, 255, 255, 0.25);
+  border-radius: 12px;
+  backdrop-filter: blur(8px);
+}
+
+/* ==== CAROUSEL ==== */
 .carasoul {
-  width: 500px;
-  height: 380px;
+  width: 480px;
+  height: 350px;
   overflow: hidden;
-  border-radius: 10px;
+  border-radius: 12px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2);
 }
+
 .slides {
   display: flex;
-  width: 100%;
-  animation: slide 8s infinite;
+  animation: slide 10s infinite;
 }
+
 @keyframes slide {
-  0% {
+  0%, 20% {
     transform: translateX(0);
   }
-  20% {
-    transform: translateX(0);
-  }
-  25% {
+  25%, 45% {
     transform: translateX(-100%);
   }
-  45% {
-    transform: translateX(-100%);
-  }
-  50% {
+  50%, 70% {
     transform: translateX(-200%);
   }
-  70% {
-    transform: translateX(-200%);
-  }
-  75% {
-    transform: translateX(-300%);
-  }
-  95% {
+  75%, 95% {
     transform: translateX(-300%);
   }
   100% {
     transform: translateX(0);
   }
 }
-.carasoul .slides > img {
-  width: 500px;
-  height: 380px;
+
+.slides img {
+  width: 480px;
+  height: 350px;
+  object-fit: cover;
 }
 
+/* ==== LOGIN/REGISTER CONTAINER ==== */
 .login-or-register {
-    background-color: aliceblue;
-    border-radius: 15px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-.login-form {
-    
-    
-    width: 330px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-.login-form > h3 {
-    margin: 0;
-    font-size: xx-large;
-}
-.login-form, .inp-div {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-}
-
-.inp-div > .email-inp-div > #email-inp,.inp-div > .pass-inp-div > #pass-inp{
-    border: none;
-    background-color: bisque;
-    width: 240px;
-    height: 30px;
-    border-radius: 10px;
-}
-
-.login-form > .inp-div> #continue-btn {
-    width: 60%;
-    height: 30px;
-}
-
-
-.registration-form {
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(10px);
+  border-radius: 18px;
+  padding: 40px 35px;
   display: flex;
   flex-direction: column;
-  gap: 10px;
-/* align-items: center; */
-justify-content: center;
-/* max-width: fit-content; */
+  align-items: center;
+  width: 370px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+  transition: all 0.3s ease;
 }
 
-.registration-form {
-  padding: 15px 30px 15px 30px;
+.login-or-register:hover {
+  transform: translateY(-4px);
 }
-.registration-form > .registration-header{
+
+/* ==== LOGIN FORM ==== */
+.login-form {
   display: flex;
-  gap: 10px;
-
+  flex-direction: column;
+  align-items: center;
+  gap: 22px;
+  width: 100%;
 }
 
-.registration-header >button {
-  background-color: transparent;
+.login-form h3 {
+  font-size: 1.8rem;
+  color: #2d2d2d;
+  margin-bottom: 10px;
+  font-weight: 600;
+}
+
+.inp-div {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  width: 100%;
+  align-items: center;
+}
+
+.inp-div input {
+  width: 85%;
+  height: 40px;
   border: none;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.85);
+  font-size: 1rem;
+  padding: 8px 14px;
+  transition: 0.2s;
+  outline: none;
+}
+
+.inp-div input:focus {
+  background-color: #fff;
+  box-shadow: 0 0 0 2px #6b7bff;
+}
+
+#continue-btn {
+  width: 60%;
+  height: 42px;
+  border: none;
+  border-radius: 10px;
+  background: linear-gradient(90deg, #667eea, #764ba2);
+  color: white;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+#continue-btn:hover {
+  background: linear-gradient(90deg, #5a67d8, #6b46c1);
+}
+
+.login-form p {
+  color: red;
+  font-size: 0.9rem;
+  margin-top: 5px;
+}
+
+/* ==== REGISTER SECTION ==== */
+.registration-form {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  padding: 15px 25px;
+  animation: fadeIn 0.5s ease;
+}
+
+.registration-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.registration-header img {
+  width: 24px;
   cursor: pointer;
 }
 
-.registration-option-btns{
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 30px;
+.registration-header h4 {
+  font-size: 1.5rem;
+  color: #343a40;
+}
 
+.registration-option-btns {
+  display: flex;
+  justify-content: center;
+  gap: 25px;
 }
 
 .registration-option-btns > button {
-  background-color: rgb(207, 210, 213);
-  border: none;
-  border-radius: 6px;
-  padding: 6px ;
-
+  background: rgba(255, 255, 255, 0.8);
+  border: 2px solid transparent;
+  border-radius: 8px;
+  padding: 8px 16px;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 500;
+  transition: 0.3s;
 }
 
+.registration-option-btns > button:hover {
+  background-color: #e0e7ff;
+}
 
 .registration-option-btns > button.active {
-  background-color: rgb(121, 89, 120);
-  color: beige;
+  background: linear-gradient(90deg, #667eea, #764ba2);
+  color: white;
+  border: 2px solid #6b7bff;
 }
+
+/* ==== REGISTER FORM ==== */
 .register-form {
   display: flex;
   flex-direction: column;
+  gap: 15px;
   align-items: center;
-  justify-content: center;
-  gap: 10px;
+}
+
+.register-form input {
+  width: 85%;
+  height: 40px;
+  border: none;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.9);
+  font-size: 1rem;
+  padding: 8px 14px;
+  transition: 0.2s;
+}
+
+.register-form input:focus {
+  background-color: #fff;
+  box-shadow: 0 0 0 2px #6b7bff;
+}
+
+.register-form button {
+  width: 60%;
+  height: 42px;
+  border: none;
+  border-radius: 10px;
+  background: linear-gradient(90deg, #764ba2, #667eea);
+  color: #fff;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.register-form button:hover {
+  background: linear-gradient(90deg, #6b46c1, #5a67d8);
+  color: beige;
+}
+
+/* ==== ERROR TEXT ==== */
+.register-form p {
+  color: red;
+  font-size: 0.9rem;
+}
+
+/* ==== LINKS ==== */
+.login-or-register p {
+  font-size: 0.95rem;
+  color: #333;
+}
+
+.login-or-register button {
+  background: none;
+  border: none;
+  color: #4a4af4;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+
+
+/* ==== ANIMATIONS ==== */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ==== RESPONSIVE DESIGN ==== */
+@media (max-width: 992px) {
+  .main-content {
+    flex-direction: column;
+    padding: 30px 15px;
+  }
+
+  .description-and-carasoul {
+    max-width: 90%;
+  }
+
+  .carasoul {
+    width: 100%;
+  }
+
+  .login-or-register {
+    width: 90%;
+  }
 }

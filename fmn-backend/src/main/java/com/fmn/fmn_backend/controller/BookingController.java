@@ -5,14 +5,10 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import com.fmn.fmn_backend.dto.BookingDTO.BookingDTO;
+import com.fmn.fmn_backend.dto.BookingDTO.BookingResponseDTO;
 import com.fmn.fmn_backend.entity.Booking;
 import com.fmn.fmn_backend.service.BookingService.BookingService;
 import com.fmn.fmn_backend.service.PropertyService.PropertyService;
@@ -35,7 +31,8 @@ public class BookingController {
     }
 
     @GetMapping("/findAll")
-    public List<Booking> findAllBookings() {
+    public List<BookingResponseDTO> findAllBookings() {
+        System.out.println(bookingService.findAllBookings());
         return bookingService.findAllBookings();
     }
 
@@ -43,9 +40,9 @@ public class BookingController {
 public ResponseEntity<?> saveBooking(
         @PathVariable Long tenantId,
         @PathVariable Long propertyId,
-        @RequestBody Booking booking) {
+        @RequestBody BookingDTO bookingDTO) {
     try {
-        Booking savedBooking = bookingService.saveBooking(tenantId, propertyId, booking);
+        BookingResponseDTO savedBooking = bookingService.saveBooking(tenantId, propertyId, bookingDTO);
         return ResponseEntity.ok(savedBooking);
     } catch (Exception e) {
         return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
@@ -53,8 +50,22 @@ public ResponseEntity<?> saveBooking(
 }
 
 @GetMapping("/owners/findBookings/{ownerId}")
-public List<Booking> findBookingByOwnerId(@PathVariable Long ownerId){
+public List<BookingResponseDTO> findBookingByOwnerId(@PathVariable Long ownerId){
     return bookingService.findBookingsByOwnerId(ownerId);
 }
 
+@PutMapping("/owners/{ownerId}/updateBooking/{bookingId}")
+public Booking updateBookingStatus(@PathVariable Long ownerId,@PathVariable Long bookingId,@RequestBody String status){
+    return bookingService.updateBookingStatus(ownerId,bookingId,status);
+}
+
+@DeleteMapping("/owners/{ownerId}/deleteBooking/{bookingId}")
+public void deleteExistingBooking(@PathVariable Long ownerId,@PathVariable Long bookingId){
+    bookingService.deleteExistingBooking(ownerId,bookingId);
+}
+
+@GetMapping("/tenants/{tenantId}/findBookings")
+public List<BookingResponseDTO> findBookingByTenantId(@PathVariable Long tenantId){
+    return bookingService.findBookingsByTenantId(tenantId);
+}
 }

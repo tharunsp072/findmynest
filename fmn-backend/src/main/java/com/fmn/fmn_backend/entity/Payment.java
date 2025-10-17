@@ -2,42 +2,44 @@ package com.fmn.fmn_backend.entity;
 
 import java.time.LocalDate;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fmn.fmn_backend.model.PaymentStatus;
 
-import jakarta.annotation.Generated;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 import lombok.Data;
 
 @Data
 @Entity
 public class Payment {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long paymentId;
 
-    private LocalDate paymentDate = LocalDate.now();
-    private Double amount;
-    private String paymentMode;
-    private String paymentStatus;
+    private LocalDate paymentDate = LocalDate.now(); // when payment is created or made
+    private LocalDate dueDate; // when payment is due (for monthly payments)
+    private Double price;
+    private Double paidAmount; // amount for the current payment
+    private String paymentMode; // UPI, CARD, BANK_TRANSFER
 
+    @Enumerated(EnumType.STRING)
+    private PaymentStatus paymentStatus; // PENDING, SUCCESS, FAILED
+    private int monthNumber; // which month this payment belongs to (1 = first month)
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name="bookingId")
+    @JoinColumn(name = "bookingId")
     @JsonIgnore
     private Booking booking;
 
-
     @Override
     public String toString() {
-        return "Payment [paymentId=" + paymentId + ", paymentDate=" + paymentDate + ", amount=" + amount
-                + ", paymentMode=" + paymentMode + ", paymentStatus=" + paymentStatus + "]";
+        return "Payment [paymentId=" + paymentId + ", paymentDate=" + paymentDate + ", dueDate=" + dueDate + ", price="
+                + price + ", paidAmount=" + paidAmount + ", paymentMode=" + paymentMode + ", paymentStatus="
+                + paymentStatus + ", monthNumber=" + monthNumber + "]";
     }
-    
+
+   
+
+   
 }
