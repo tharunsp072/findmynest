@@ -50,3 +50,22 @@ export interface OwnerProfile {
     total_revenue : string;
 }
 
+
+export interface Payment {
+     paymentId? : number;
+     paymentDate : Date;
+     dueDate  : Date;
+     price : number;
+     paidAmount : number;
+     paymentMode : string;
+     paymentStatus : PaymentStatus;
+     monthNumber : number;
+     booking : Booking;
+     tenant : TenantProfile;
+
+}
+
+export enum PaymentStatus {
+     PENDING = "PENDING",
+     PAID = "PAID"
+}

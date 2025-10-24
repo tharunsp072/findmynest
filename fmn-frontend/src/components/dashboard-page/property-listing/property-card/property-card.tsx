@@ -16,6 +16,7 @@ export class PropertyCard {
   @State() favorite: boolean = false;
   @State() showCancelConfirm: boolean = false;
 
+  @Event({ bubbles: true, composed: true }) payRent: EventEmitter<{ property: Property; pay: boolean }>;
   @Event() booking: EventEmitter<{ booked: boolean; property: Property }>;
   @Event() addToFavorites: EventEmitter<{ favorite: boolean; property: Property }>;
   @Event() cancelBooking: EventEmitter<{ cancel: boolean; property: Property }>;
@@ -25,6 +26,15 @@ export class PropertyCard {
     this.booked = !this.booked;
     this.booking.emit({ booked: this.booked, property: this.propertys });
   };
+
+  handleRentPayment(e : Event) {
+    // console.log("from rent payment");
+      e.stopPropagation();
+    this.payRent.emit({
+      property: this.propertys,
+      pay: true,
+    });
+  }
 
   handleFavorites = (e: Event) => {
     e.preventDefault();
@@ -77,16 +87,18 @@ export class PropertyCard {
               <p>
                 <strong>Rent:</strong> ₹{this.propertys.price}
               </p>
-              <p>
-                <strong>Duration:</strong> {this.propertys.booking.startDate} → {this.propertys.booking.endDate}
-              </p>
             </div>
+            <p class="duration">
+              <strong>Duration:</strong> {this.propertys.booking.startDate} → {this.propertys.booking.endDate}
+            </p>
 
             <div class="property-status">
               <span class={`status-badge ${this.propertys.status.toLowerCase()}`}>{this.propertys.status}</span>
             </div>
             <div class="tenant-actions">
-              <button class="pay-btn">Pay Rent</button>
+              <button class="pay-btn" onClick={(e) => this.handleRentPayment(e )}>
+                Pay Rent
+              </button>
               <button class="cancel-btn" onClick={() => this.handleCancelBooking()}>
                 Cancel Booking
               </button>

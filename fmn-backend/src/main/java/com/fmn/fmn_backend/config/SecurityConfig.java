@@ -27,21 +27,17 @@ public class SecurityConfig {
                 .cors(cors -> {
                 }) 
                 .authorizeHttpRequests(auth -> auth
-                        // allow preflight requests
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                         .requestMatchers("/api/auth/**", "/h2-console/**").permitAll()
                         .requestMatchers("/owners/**").hasRole("OWNER")
                         .requestMatchers("/tenants/**").hasRole("TENANT")
                         .requestMatchers("/bookings/**").hasAnyRole("OWNER","TENANT")
-                        // .requestMatchers("/bookings/**").hasRole("OWNER")
-                        
                         .requestMatchers("/inquiry/**").hasRole("TENANT")
                         .anyRequest().authenticated())
                 .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider)
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
 
-        // allow H2 console
         http.headers(headers -> headers.frameOptions(frame -> frame.disable()));
 
         return http.build();

@@ -77,6 +77,10 @@ export interface PropertyCardCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLPropertyCardElement;
 }
+export interface PropertyListingCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLPropertyListingElement;
+}
 declare global {
     interface HTMLAddPropertyFormElement extends Components.AddPropertyForm, HTMLStencilElement {
     }
@@ -226,12 +230,14 @@ declare namespace LocalJSX {
         "onAddToFavorites"?: (event: PropertyCardCustomEvent<{ favorite: boolean; property: Property }>) => void;
         "onBooking"?: (event: PropertyCardCustomEvent<{ booked: boolean; property: Property }>) => void;
         "onCancelBooking"?: (event: PropertyCardCustomEvent<{ cancel: boolean; property: Property }>) => void;
+        "onPayRent"?: (event: PropertyCardCustomEvent<{ property: Property; pay: boolean }>) => void;
         "propertys": Property;
         "role"?: string;
         "sourceCard"?: string;
     }
     interface PropertyListing {
         "listingProperties"?: Property[];
+        "onPayRent"?: (event: PropertyListingCustomEvent<{ property: Property; pay: boolean }>) => void;
         "source"?: string;
         "user"?: number;
     }

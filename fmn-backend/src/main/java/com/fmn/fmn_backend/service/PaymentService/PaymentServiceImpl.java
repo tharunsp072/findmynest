@@ -7,9 +7,11 @@ import org.springframework.stereotype.Service;
 
 import com.fmn.fmn_backend.dto.PaymentDTO;
 import com.fmn.fmn_backend.entity.Booking;
+import com.fmn.fmn_backend.entity.OwnerProfile;
 import com.fmn.fmn_backend.entity.Payment;
 import com.fmn.fmn_backend.model.PaymentStatus;
 import com.fmn.fmn_backend.repository.BookingRepository;
+import com.fmn.fmn_backend.repository.OwnerRepository;
 import com.fmn.fmn_backend.repository.PaymentRepository;
 
 @Service
@@ -21,15 +23,26 @@ public class PaymentServiceImpl implements PaymentService {
     @Autowired
     private BookingRepository bookingRepo;
     
-    @Override
-    public Payment processPayment(Long bookingId, Payment payment) throws Exception {
-      Booking booking = bookingRepo.findById(bookingId)
-                .orElseThrow(() -> new Exception("Booking not found"));
+    @Autowired 
+    private OwnerRepository ownerRepo;
+   @Override
+public Payment processPayment(Long bookingId, Payment payment) throws Exception {
+    Booking booking = bookingRepo.findById(bookingId)
+            .orElseThrow(() -> new Exception("Booking not found"));
 
-        payment.setBooking(booking);
-        payment.setPaymentStatus(PaymentStatus.PAID);
-        return paymentRepo.save(payment);
-    }
+
+    payment.setBooking(booking);
+    payment.setPaymentStatus(PaymentStatus.PAID);
+    Payment savedPayment = paymentRepo.save(payment);
+    OwnerProfile owner = booking.getProperty().getOwner();
+    double newRevenue = owner.getTotal_revenue() == null ? 0 : Double.parseDouble(owner.getTotal_revenue());
+    newRevenue += payment.getPaidAmount();
+    owner.setTotal_revenue(String.valueOf(newRevenue));
+    ownerRepo.save(owner);
+
+    return savedPayment;
+}
+
 
     @Override
     public List<Payment> getPaymentsByTenant(Long tenantId) {

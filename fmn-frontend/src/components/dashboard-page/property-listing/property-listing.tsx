@@ -1,6 +1,5 @@
-import { Component, h, State, Prop, Watch } from '@stencil/core';
+import { Component, h, State, Prop, Watch, Event, EventEmitter } from '@stencil/core';
 import { Property } from '../../../models/interfaces';
-
 
 @Component({
   tag: 'property-listing',
@@ -14,13 +13,15 @@ export class PropertyListing {
   @State() showBookingDialog: boolean = false;
   @State() startDate: string = '';
   @State() endDate: string = '';
-  // @State() selectedPaymentMode : string = '';
   @State() bookProperty: boolean;
 
   @Prop() listingProperties?: Property[] = [];
   @Prop() source?: string;
   @Prop() user?: number;
 
+  @Event() payRent: EventEmitter<{ property: Property; pay: boolean }>;
+
+  // using the componentWillLoad() to assign the properties data based on the role
   async componentWillLoad() {
     if (this.source === 'owner') {
       this.properties = this.listingProperties?.length ? this.listingProperties : [];
@@ -32,11 +33,16 @@ export class PropertyListing {
     }
   }
 
+  // using the @watch decorator to caputre the changes made on the state listingproperties and
+  // and then call the function listingPropertiesChanged to handle the changes in the list of properties
+  // by dynamically updating it without running the componentWillLoad() everytime
   @Watch('listingProperties')
   listingPropertiesChanged(newValue: Property[]) {
     this.properties = newValue || [];
   }
 
+  //fetching all the properties which are having the booking status
+  //  as pending or cancelled and not confirmed to display in the home page
   fetchAllProperties = async () => {
     try {
       const token = localStorage.getItem('token');
@@ -55,6 +61,7 @@ export class PropertyListing {
     }
   };
 
+  //Handling the delete functionality given only to the owner on owner's listings only
   handleDeleteProperty = async (e: Event, propertyId: string, userId: number) => {
     if (!userId) {
       console.error('User ID is missing');
@@ -82,6 +89,7 @@ export class PropertyListing {
     }
   };
 
+  //capturing the event from the property-card child to display the booking dialog module of the property which is to be booked
   handleBookingEvent(e: CustomEvent<{ booked: boolean; property: Property }>) {
     const { booked, property } = e.detail;
 
@@ -91,6 +99,7 @@ export class PropertyListing {
     }
   }
 
+  //closing the booking dialog module
   closeDialog() {
     this.showBookingDialog = false;
     this.selectedProperty = null;
@@ -98,6 +107,7 @@ export class PropertyListing {
     this.endDate = '';
   }
 
+  //saving the booking informeation to the backend once the tenant confirms the booking date
   async confirmBooking() {
     if (!this.startDate || !this.endDate) {
       alert('Please select start and end dates');
@@ -131,8 +141,6 @@ export class PropertyListing {
       } else {
         this.handleBookingStatus(this.selectedProperty.propertyId);
       }
-      // alert('Property booked successfully!');
-
       this.closeDialog();
     } catch (err) {
       console.error(err);
@@ -140,17 +148,38 @@ export class PropertyListing {
     }
   }
 
-  handleCancelBookingEvent(e: CustomEvent<{ cancel: boolean; property: Property }>) {
-    const propertyId = e.detail.property.propertyId;
-
-    if (e.detail.cancel) {
-      this.handleDeleteProperty(new Event(''), propertyId, this.user);
+  //booking cancellation by tenant after being confirmed by owner
+  async handleCancelBookingEvent(e: CustomEvent<{ cancel: boolean; property: Property }>) {
+    const bookingId = e.detail.property.booking.bookingId;
+    try {
+      const token = localStorage.getItem('token');
+      const tenantId = localStorage.getItem('profileId');
+      const response = await fetch(`http://localhost:8080/bookings/tenants/${tenantId}/updateBooking/${bookingId}`, {
+        method: 'PUT',
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      if (!response.ok) throw new Error(`${response.status}}`);
+    } catch (err) {
+      console.error(err);
     }
   }
 
+  //updating the booking status to handle the interface
   handleBookingStatus(propertyId: string) {
     this.properties = this.properties.map(p => (p.propertyId === propertyId ? { ...p, booked: true } : p));
   }
+
+  handlePayRentEvent(e: CustomEvent) {
+    // if (this.payRent) {
+    //   // only emit if parent is listening
+    //   // console.log(e.detail);
+    //   this.payRent.emit(e.detail);
+    // }
+  }
+
+  //rendering the booking module in tenant profile once the tenant clicks on book button
   renderBookingDialog() {
     if (!this.showBookingDialog || !this.selectedProperty) return null;
 
@@ -162,11 +191,11 @@ export class PropertyListing {
             <b>{this.selectedProperty.title}</b>
           </p>
           <label>
-            Start Date:
+            Start Date
             <input type="date" value={this.startDate} onInput={(e: any) => (this.startDate = e.target.value)} />
           </label>
           <label>
-            End Date:
+            End Date
             <input type="date" value={this.endDate} onInput={(e: any) => (this.endDate = e.target.value)} />
           </label>
           <div class="dialog-buttons">
@@ -193,6 +222,7 @@ export class PropertyListing {
                 onBooking={(e: CustomEvent<{ booked: boolean; property: Property }>) => this.handleBookingEvent(e)}
                 onCancelBooking={(e: CustomEvent<{ cancel: boolean; property: Property }>) => this.handleCancelBookingEvent(e)}
                 bookingStatus={property.booked}
+                onPayRent={(e: CustomEvent) => this.handlePayRentEvent(e)}
               />
 
               {this.source === 'owner' && this.user && <button onClick={e => this.handleDeleteProperty(e, property.propertyId, this.user)}>❌</button>}

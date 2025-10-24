@@ -193,11 +193,28 @@ public class BookingServiceImpl implements BookingService {
                     dto.setStatus(booking.getStatus().toString());
                     dto.setTenant(new TenantDTO(booking.getTenant()));
                     dto.setProperty(new PropertyDTO(booking.getProperty()));
-                    dto.setPayments(booking.getPayments().stream().map(payment -> new PaymentDTO(payment)).toList());
+                    // dto.setPayments(booking.getPayments().stream().map(payment -> new PaymentDTO(payment)).toList());    
                     return dto;
-                }).toList();    
+                }).toList();
 
         return confirmedBookings;
+    }
+
+    @Override
+    public BookingResponseDTO updateTenantBookingStatus(Long tenantId, Long bookingId) {
+        Booking booking = bookingRepo.findById(bookingId).orElseThrow(() -> new RuntimeException("Booking not found"));
+
+        booking.setStatus(BookingStatus.CANCELLED);
+        booking.getProperty().setStatus(AvailableStatus.AVAILABLE);
+        bookingRepo.save(booking);
+        BookingResponseDTO dto = new BookingResponseDTO();
+        dto.setBookingId(booking.getBookingId());
+        dto.setEndDate(booking.getEndDate());
+        dto.setStartDate(booking.getStartDate());
+        dto.setPayments(null);
+        // dto.setTenant(null);
+        // dto.setStatus();
+        return dto ;
     }
 
 }

@@ -90,4 +90,9 @@ public List<BookingResponseDTO> findBookingByTenantId(@PathVariable Long tenantI
 public List<BookingResponseDTO> findConfirmedProperties(@PathVariable long tenantId){
     return bookingService.findConfirmedBookingsByTenantId(tenantId);
 }
+
+@PutMapping("/tenants/{tenantId}/updateBooking/{bookingId}")
+public BookingResponseDTO updateTenantBookingStatus(@PathVariable Long tenantId,@PathVariable Long bookingId){
+    return bookingService.updateTenantBookingStatus(tenantId,bookingId);
+}
 }

@@ -27,8 +27,8 @@ export class InquiryForm {
              status: 'PENDING',
              inquiryDate: new Date().toISOString(),
            }),
-           mode: 'cors', // ensures CORS request
-           credentials: 'include', // optional if using cookies
+           mode: 'cors', 
+           credentials: 'include',
          });
 
           if(!response.ok)throw new Error(`Http network error ${response.status}`);

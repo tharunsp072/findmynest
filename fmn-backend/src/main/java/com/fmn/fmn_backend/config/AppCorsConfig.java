@@ -13,7 +13,7 @@ public class AppCorsConfig {
     public CorsFilter corsFilter() {
         CorsConfiguration config = new CorsConfiguration();
         config.setAllowCredentials(true);
-        config.addAllowedOrigin("http://localhost:3333"); // your frontend
+        config.addAllowedOrigin("http://localhost:3333"); 
         config.addAllowedHeader("*");
         config.addAllowedMethod("*");
 
