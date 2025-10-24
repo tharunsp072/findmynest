@@ -11,6 +11,8 @@
     "target": "es2022",
     "noUnusedLocals": true,
     "noUnusedParameters": true,
+    "noResolve": false, // ensure resolution happens
+    "noEmitOnError": false,
     "jsx": "react",
     "jsxFactory": "h",
     "jsxFragmentFactory": "h.Fragment"

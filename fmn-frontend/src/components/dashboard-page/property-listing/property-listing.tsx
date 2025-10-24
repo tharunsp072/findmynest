@@ -1,5 +1,6 @@
 import { Component, h, State, Prop, Watch } from '@stencil/core';
-import { Property } from './property';
+import { Property } from '../../../models/interfaces';
+
 
 @Component({
   tag: 'property-listing',
@@ -22,6 +23,8 @@ export class PropertyListing {
 
   async componentWillLoad() {
     if (this.source === 'owner') {
+      this.properties = this.listingProperties?.length ? this.listingProperties : [];
+    } else if (this.source === 'tenant') {
       this.properties = this.listingProperties?.length ? this.listingProperties : [];
     } else {
       this.properties = await this.fetchAllProperties();
@@ -137,8 +140,15 @@ export class PropertyListing {
     }
   }
 
+  handleCancelBookingEvent(e: CustomEvent<{ cancel: boolean; property: Property }>) {
+    const propertyId = e.detail.property.propertyId;
+
+    if (e.detail.cancel) {
+      this.handleDeleteProperty(new Event(''), propertyId, this.user);
+    }
+  }
+
   handleBookingStatus(propertyId: string) {
-    
     this.properties = this.properties.map(p => (p.propertyId === propertyId ? { ...p, booked: true } : p));
   }
   renderBookingDialog() {
@@ -171,18 +181,24 @@ export class PropertyListing {
   render() {
     return (
       <div class="property-listing">
-        {this.properties.map(property => (
-          <div class={`${this.source}-property-item`}>
-            <property-card
-              role={this.source}
-              propertys={property}
-              onBooking={(e: CustomEvent<{ booked: boolean; property: Property }>) => this.handleBookingEvent(e)}
-              bookingStatus={property.booked}
-            />
+        {this.properties.length === 0 ? (
+          <p>No Properties Available</p>
+        ) : (
+          this.properties.map(property => (
+            <div class={`${this.source}-property-item`}>
+              <property-card
+                role={this.source}
+                sourceCard={this.source}
+                propertys={property}
+                onBooking={(e: CustomEvent<{ booked: boolean; property: Property }>) => this.handleBookingEvent(e)}
+                onCancelBooking={(e: CustomEvent<{ cancel: boolean; property: Property }>) => this.handleCancelBookingEvent(e)}
+                bookingStatus={property.booked}
+              />
 
-            {this.source === 'owner' && this.user && <button onClick={e => this.handleDeleteProperty(e, property.propertyId, this.user)}>❌</button>}
-          </div>
-        ))}
+              {this.source === 'owner' && this.user && <button onClick={e => this.handleDeleteProperty(e, property.propertyId, this.user)}>❌</button>}
+            </div>
+          ))
+        )}
         {this.error && <p>{this.error}</p>}
         {this.renderBookingDialog()}
       </div>

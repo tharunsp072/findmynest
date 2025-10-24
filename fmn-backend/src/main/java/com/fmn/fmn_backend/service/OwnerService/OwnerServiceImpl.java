@@ -1,24 +1,20 @@
 package com.fmn.fmn_backend.service.OwnerService;
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
 
+import java.util.*;
+
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
+import com.fmn.fmn_backend.dto.OwnerDTO.OwnerDTO;
 import com.fmn.fmn_backend.entity.OwnerProfile;
 import com.fmn.fmn_backend.entity.Payment;
 import com.fmn.fmn_backend.entity.Property;
 import com.fmn.fmn_backend.entity.TenantProfile;
 import com.fmn.fmn_backend.entity.User;
+import com.fmn.fmn_backend.model.AvailableStatus;
 import com.fmn.fmn_backend.repository.BookingRepository;
 import com.fmn.fmn_backend.repository.OwnerRepository;
 import com.fmn.fmn_backend.repository.PaymentRepository;
@@ -50,6 +46,9 @@ public class OwnerServiceImpl implements OwnerService {
     @Autowired
     private PaymentRepository paymentRepo;
 
+    @Autowired
+    private ModelMapper modelMapper;
+
     public OwnerProfile saveOwner(Long user_id, OwnerProfile owner) {
         User user = userRepo.findById(user_id).orElseThrow(() -> new RuntimeException("User not found"));
         owner.setUser(user);
@@ -57,12 +56,10 @@ public class OwnerServiceImpl implements OwnerService {
     }
 
     @Override
-    public OwnerProfile findById(Long id) {
-        Optional<OwnerProfile> owner = ownerRepo.findById(id);
-        if (owner.isPresent()) {
-            return owner.get();
-        }
-        return owner.orElseThrow(() -> new RuntimeException("Owner not found"));
+    public OwnerDTO findById(Long id) {
+        OwnerProfile owner = ownerRepo.findById(id)
+                .orElseThrow(() -> new RuntimeException("Owner not found"));
+       return modelMapper.map(owner, OwnerDTO.class);
     }
 
         // @Override
@@ -99,7 +96,7 @@ public class OwnerServiceImpl implements OwnerService {
                     .orElseThrow(() -> new RuntimeException("Owner profile not found"));
 
             property.setOwner(owner);
-
+            property.setStatus(AvailableStatus.AVAILABLE);
             return propertyRepo.save(property);
         }
 

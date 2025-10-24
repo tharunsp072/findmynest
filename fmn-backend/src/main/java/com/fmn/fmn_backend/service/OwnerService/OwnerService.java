@@ -3,6 +3,7 @@ package com.fmn.fmn_backend.service.OwnerService;
 import java.util.List;
 import java.util.Map;
 
+import com.fmn.fmn_backend.dto.OwnerDTO.OwnerDTO;
 import com.fmn.fmn_backend.entity.OwnerProfile;
 import com.fmn.fmn_backend.entity.Property;
 import com.fmn.fmn_backend.entity.TenantProfile;
@@ -10,7 +11,7 @@ import com.fmn.fmn_backend.entity.TenantProfile;
 public interface OwnerService {
         OwnerProfile saveOwner(Long user_id, OwnerProfile owner);
 
-        OwnerProfile findById(Long id);
+        OwnerDTO findById(Long id);
 
         Property saveProperty(Long ownerId, Property property);
 

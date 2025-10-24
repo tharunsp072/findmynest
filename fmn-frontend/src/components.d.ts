@@ -5,19 +5,23 @@
  * It contains typing information for all components that exist in this project.
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
-import { Property } from "./components/dashboard-page/property-listing/property";
-export { Property } from "./components/dashboard-page/property-listing/property";
+import { MatchResults } from "@stencil/router";
+import { Property } from "./models/interfaces";
+export { MatchResults } from "@stencil/router";
+export { Property } from "./models/interfaces";
 export namespace Components {
     interface AddPropertyForm {
         "source": string;
         "user": number;
     }
     interface AppNavbar {
+        "activeMenu": string;
         "role": string;
     }
     interface AppRoutes {
     }
     interface DashboardPage {
+        "match": MatchResults;
     }
     interface InquiryForm {
         "propertyId": string | number;
@@ -27,6 +31,8 @@ export namespace Components {
         "role": string;
     }
     interface LoginPage {
+    }
+    interface MyRentals {
     }
     interface OwnerProperties {
         "user": number;
@@ -39,11 +45,14 @@ export namespace Components {
         "bookingStatus": boolean;
         "propertys": Property;
         "role": string;
+        "sourceCard"?: string;
     }
     interface PropertyListing {
         "listingProperties"?: Property[];
         "source"?: string;
         "user"?: number;
+    }
+    interface RedirectHome {
     }
     interface TenantFavorites {
     }
@@ -51,10 +60,6 @@ export namespace Components {
         "role": string;
         "user": number;
     }
-}
-export interface AddPropertyFormCustomEvent<T> extends CustomEvent<T> {
-    detail: T;
-    target: HTMLAddPropertyFormElement;
 }
 export interface AppNavbarCustomEvent<T> extends CustomEvent<T> {
     detail: T;
@@ -115,6 +120,12 @@ declare global {
         prototype: HTMLLoginPageElement;
         new (): HTMLLoginPageElement;
     };
+    interface HTMLMyRentalsElement extends Components.MyRentals, HTMLStencilElement {
+    }
+    var HTMLMyRentalsElement: {
+        prototype: HTMLMyRentalsElement;
+        new (): HTMLMyRentalsElement;
+    };
     interface HTMLOwnerPropertiesElement extends Components.OwnerProperties, HTMLStencilElement {
     }
     var HTMLOwnerPropertiesElement: {
@@ -139,6 +150,12 @@ declare global {
         prototype: HTMLPropertyListingElement;
         new (): HTMLPropertyListingElement;
     };
+    interface HTMLRedirectHomeElement extends Components.RedirectHome, HTMLStencilElement {
+    }
+    var HTMLRedirectHomeElement: {
+        prototype: HTMLRedirectHomeElement;
+        new (): HTMLRedirectHomeElement;
+    };
     interface HTMLTenantFavoritesElement extends Components.TenantFavorites, HTMLStencilElement {
     }
     var HTMLTenantFavoritesElement: {
@@ -159,27 +176,30 @@ declare global {
         "inquiry-form": HTMLInquiryFormElement;
         "inquiry-page": HTMLInquiryPageElement;
         "login-page": HTMLLoginPageElement;
+        "my-rentals": HTMLMyRentalsElement;
         "owner-properties": HTMLOwnerPropertiesElement;
         "payments-page": HTMLPaymentsPageElement;
         "property-card": HTMLPropertyCardElement;
         "property-listing": HTMLPropertyListingElement;
+        "redirect-home": HTMLRedirectHomeElement;
         "tenant-favorites": HTMLTenantFavoritesElement;
         "user-profile": HTMLUserProfileElement;
     }
 }
 declare namespace LocalJSX {
     interface AddPropertyForm {
-        "onPageRender"?: (event: AddPropertyFormCustomEvent<string>) => void;
         "source"?: string;
         "user"?: number;
     }
     interface AppNavbar {
+        "activeMenu"?: string;
         "onHandleNav"?: (event: AppNavbarCustomEvent<string>) => void;
         "role"?: string;
     }
     interface AppRoutes {
     }
     interface DashboardPage {
+        "match"?: MatchResults;
     }
     interface InquiryForm {
         "onCloseForm"?: (event: InquiryFormCustomEvent<void>) => void;
@@ -190,6 +210,8 @@ declare namespace LocalJSX {
         "role"?: string;
     }
     interface LoginPage {
+    }
+    interface MyRentals {
     }
     interface OwnerProperties {
         "onChangeNav"?: (event: OwnerPropertiesCustomEvent<string>) => void;
@@ -203,13 +225,17 @@ declare namespace LocalJSX {
         "bookingStatus"?: boolean;
         "onAddToFavorites"?: (event: PropertyCardCustomEvent<{ favorite: boolean; property: Property }>) => void;
         "onBooking"?: (event: PropertyCardCustomEvent<{ booked: boolean; property: Property }>) => void;
+        "onCancelBooking"?: (event: PropertyCardCustomEvent<{ cancel: boolean; property: Property }>) => void;
         "propertys": Property;
         "role"?: string;
+        "sourceCard"?: string;
     }
     interface PropertyListing {
         "listingProperties"?: Property[];
         "source"?: string;
         "user"?: number;
+    }
+    interface RedirectHome {
     }
     interface TenantFavorites {
     }
@@ -225,10 +251,12 @@ declare namespace LocalJSX {
         "inquiry-form": InquiryForm;
         "inquiry-page": InquiryPage;
         "login-page": LoginPage;
+        "my-rentals": MyRentals;
         "owner-properties": OwnerProperties;
         "payments-page": PaymentsPage;
         "property-card": PropertyCard;
         "property-listing": PropertyListing;
+        "redirect-home": RedirectHome;
         "tenant-favorites": TenantFavorites;
         "user-profile": UserProfile;
     }
@@ -244,10 +272,12 @@ declare module "@stencil/core" {
             "inquiry-form": LocalJSX.InquiryForm & JSXBase.HTMLAttributes<HTMLInquiryFormElement>;
             "inquiry-page": LocalJSX.InquiryPage & JSXBase.HTMLAttributes<HTMLInquiryPageElement>;
             "login-page": LocalJSX.LoginPage & JSXBase.HTMLAttributes<HTMLLoginPageElement>;
+            "my-rentals": LocalJSX.MyRentals & JSXBase.HTMLAttributes<HTMLMyRentalsElement>;
             "owner-properties": LocalJSX.OwnerProperties & JSXBase.HTMLAttributes<HTMLOwnerPropertiesElement>;
             "payments-page": LocalJSX.PaymentsPage & JSXBase.HTMLAttributes<HTMLPaymentsPageElement>;
             "property-card": LocalJSX.PropertyCard & JSXBase.HTMLAttributes<HTMLPropertyCardElement>;
             "property-listing": LocalJSX.PropertyListing & JSXBase.HTMLAttributes<HTMLPropertyListingElement>;
+            "redirect-home": LocalJSX.RedirectHome & JSXBase.HTMLAttributes<HTMLRedirectHomeElement>;
             "tenant-favorites": LocalJSX.TenantFavorites & JSXBase.HTMLAttributes<HTMLTenantFavoritesElement>;
             "user-profile": LocalJSX.UserProfile & JSXBase.HTMLAttributes<HTMLUserProfileElement>;
         }

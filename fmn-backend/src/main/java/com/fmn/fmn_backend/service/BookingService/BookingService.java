@@ -14,4 +14,5 @@ public interface BookingService {
     Booking updateBookingStatus(Long ownerId, Long bookingId,String status);
     void deleteExistingBooking(Long ownerId, Long bookingId);
     List<BookingResponseDTO> findBookingsByTenantId(Long tenantId);
+    List<BookingResponseDTO> findConfirmedBookingsByTenantId(long tenantId);
 }

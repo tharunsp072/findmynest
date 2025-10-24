@@ -167,7 +167,8 @@ export class UserProfile {
           <ul>
             {owner.tenants.map(t => (
               <li>
-                {t.username} ({t.contact_number})
+                <p>Name: {t.username} </p>
+                <p>Contact Number:{t.contact_number} </p>
               </li>
             ))}
           </ul>

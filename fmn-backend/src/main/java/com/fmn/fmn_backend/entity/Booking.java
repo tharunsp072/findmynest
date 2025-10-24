@@ -41,7 +41,7 @@ public class Booking {
 
     @OneToMany(mappedBy = "booking", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
-    private List<Payment> payments;
+    private List<Payment> payments = new ArrayList<>();
 
 
     @Override

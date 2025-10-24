@@ -49,7 +49,7 @@ public class PropertyServiceImpl implements PropertyService {
 
     @Override
     public List<PropertyDTO> findAllNotConfirmedProperties() {
-        List<Property> properties = propertyRepo.findAllByStatus(AvailableStatus.Available);
+        List<Property> properties = propertyRepo.findAllByStatus(AvailableStatus.AVAILABLE);
         return properties.stream()
                 .map(PropertyDTO::new)
                 .toList();

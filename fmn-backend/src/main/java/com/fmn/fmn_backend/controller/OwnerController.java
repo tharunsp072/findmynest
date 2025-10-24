@@ -4,15 +4,9 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import com.fmn.fmn_backend.dto.OwnerDTO.OwnerDTO;
 import com.fmn.fmn_backend.entity.OwnerProfile;
 import com.fmn.fmn_backend.entity.Property;
 import com.fmn.fmn_backend.entity.TenantProfile;
@@ -36,32 +30,32 @@ public class OwnerController {
     }
 
     @GetMapping("/findOwner/{id}")
-    public OwnerProfile findOwner(@PathVariable Long id) {
+    public OwnerDTO findOwner(@PathVariable Long id) {
         return ownerService.findById(id);
     }
 
     // @PostMapping("/listProperties/{userId}")
     // public Property listProperties(
-    //         @PathVariable Long userId,
-    //         @ModelAttribute PropertyDTO propertyDTO, // <-- binds all text/number fields
-    //         @RequestParam("imgUrl") MultipartFile imageFile) { // <-- file separately
+    // @PathVariable Long userId,
+    // @ModelAttribute PropertyDTO propertyDTO, // <-- binds all text/number fields
+    // @RequestParam("imgUrl") MultipartFile imageFile) { // <-- file separately
 
-    //     Property property = new Property();
-    //     property.setTitle(propertyDTO.getTitle());
-    //     property.setDescription(propertyDTO.getDescription());
-    //     property.setPrice(propertyDTO.getPrice());
-    //     property.setAddress(propertyDTO.getAddress());
-    //     property.setStatus(propertyDTO.getStatus());
-    //     property.setCarpetArea(propertyDTO.getCarpetArea());
-    //     property.setAgeOfBuilding(propertyDTO.getAgeOfBuilding());
-    //     property.setFurnishedStatus(propertyDTO.getFurnishedStatus());
+    // Property property = new Property();
+    // property.setTitle(propertyDTO.getTitle());
+    // property.setDescription(propertyDTO.getDescription());
+    // property.setPrice(propertyDTO.getPrice());
+    // property.setAddress(propertyDTO.getAddress());
+    // property.setStatus(propertyDTO.getStatus());
+    // property.setCarpetArea(propertyDTO.getCarpetArea());
+    // property.setAgeOfBuilding(propertyDTO.getAgeOfBuilding());
+    // property.setFurnishedStatus(propertyDTO.getFurnishedStatus());
 
-    //     return ownerService.saveProperty(userId, property, imageFile);
+    // return ownerService.saveProperty(userId, property, imageFile);
     // }
 
     @PostMapping("/listProperties/{userId}")
     public Property listProperties(@PathVariable Long userId, @RequestBody Property property) {
-        return ownerService.saveProperty(userId, property); 
+        return ownerService.saveProperty(userId, property);
     }
 
     @GetMapping("/getProperties/{userId}")
@@ -79,10 +73,10 @@ public class OwnerController {
         ownerService.deleteOwnerProperty(propertyId, userId);
     }
 
-
     @PutMapping("/updateOwner/{userId}")
-    public OwnerProfile updateOwnerDetails(@PathVariable("userId") Long userId,@RequestBody OwnerProfile ownerProfile){
-        return ownerService.updateOwnerDetails(userId,ownerProfile);
+    public OwnerProfile updateOwnerDetails(@PathVariable("userId") Long userId,
+            @RequestBody OwnerProfile ownerProfile) {
+        return ownerService.updateOwnerDetails(userId, ownerProfile);
     }
 
     @GetMapping("/{ownerId}/stats")

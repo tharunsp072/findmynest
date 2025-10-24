@@ -11,8 +11,9 @@ import lombok.*;
 @Entity
 @Data
 public class OwnerProfile {
-    
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long ownerId;
 
     private String fullname;
@@ -25,12 +26,12 @@ public class OwnerProfile {
     @JsonIgnore
     private User user;
 
-    @OneToMany(mappedBy = "owner",cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonIgnoreProperties({"owner", "bookings"})
+    @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnoreProperties({ "owner", "bookings" })
     private List<Property> properties;
 
-    @OneToMany(mappedBy = "owner",cascade = CascadeType.ALL)
-    @JsonIgnore
+    @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL)
+    @JsonIgnoreProperties({ "owner" })
     private List<TenantProfile> tenants;
 
     @Override
@@ -39,5 +40,4 @@ public class OwnerProfile {
                 + ", address=" + address + ", total_revenue=" + total_revenue + "]";
     }
 
-    
 }

@@ -1,4 +1,4 @@
-import { Component, h, Prop, State, Event, EventEmitter, Watch,  } from '@stencil/core';
+import { Component, h, Prop, State, Event, EventEmitter, Watch } from '@stencil/core';
 
 @Component({
   tag: 'app-navbar',
@@ -6,9 +6,8 @@ import { Component, h, Prop, State, Event, EventEmitter, Watch,  } from '@stenci
   shadow: true,
 })
 export class AppNavBar {
-  @State() activeMenu: string = 'home';
-  @Prop({ mutable: true, reflect: true }) role: string;
-
+  @Prop() activeMenu: string = 'home';
+  @Prop() role: string;
   @Event() handleNav: EventEmitter<string>;
 
   handleNavClick(activeMenu: string) {
@@ -39,37 +38,58 @@ export class AppNavBar {
             <input type="text" id="search-inp" placeholder="Search properties..." />
           </div>
           <ul class="nav-links">
-            <li class={this.activeMenu === 'home' ? 'active' : ''} onClick={() => this.handleNavClick('home')}>
-              Home
+            <li class={this.activeMenu === 'home' ? 'active' : ''} onClick={() => (this.activeMenu = 'home')}>
+              <stencil-route-link url="/dashboard/home">Home</stencil-route-link>
             </li>
-            {/* 
-            <li class={this.activeMenu === 'properties' ? 'active' : ''} onClick={() => this.handleNavClick('properties')}>
-              Properties
-            </li> */}
 
             {this.role !== 'TENANT' && (
-              <li class={this.activeMenu === 'my-properties' ? 'active' : ''} onClick={() => this.handleNavClick('my-properties')}>
-                My Listings
+              <li class={this.activeMenu === 'my-properties' ? 'active' : ''} onClick={() => (this.activeMenu = 'my-properties')}>
+                <stencil-route-link url="/dashboard/my-properties">My Listings</stencil-route-link>
               </li>
             )}
 
             {this.role !== 'TENANT' && (
-              <li class={this.activeMenu === 'add-property' ? 'active' : ''} onClick={() => this.handleNavClick('add-property')}>
-                Add Property
+              <li class={this.activeMenu === 'add-property' ? 'active' : ''} onClick={() => (this.activeMenu = 'add-property')}>
+                <stencil-route-link url="/dashboard/add-property">Add Property</stencil-route-link>
               </li>
             )}
 
-            {this.role === 'OWNER' && <li onClick={() => this.handleNavClick('owner-payments')}>Payments Received</li>}
-            {this.role === 'OWNER' && <li onClick={() => this.handleNavClick('owner-inquires')}>Inquiries</li>}
+            {this.role === 'OWNER' && (
+              <li class={this.activeMenu === 'payments' ? 'active' : ''} onClick={() => (this.activeMenu = 'payments')}>
+                <stencil-route-link url="/dashboard/payments">Payments Received</stencil-route-link>
+              </li>
+            )}
+            {this.role === 'OWNER' && (
+              <li class={this.activeMenu === 'inquiry' ? 'active' : ''} onClick={() => (this.activeMenu = 'inquiry')}>
+                {' '}
+                <stencil-route-link url="/dashboard/inquiries">Inquiries</stencil-route-link>
+              </li>
+            )}
+            {this.role === 'TENANT' && (
+              <li class={this.activeMenu === 'myRentals' ? 'active' : ''} onClick={() => (this.activeMenu = 'myRentals')}>
+                {' '}
+                <stencil-route-link url="/dashboard/myRentals">My Rentals</stencil-route-link>
+              </li>
+            )}
 
-            {this.role === 'TENANT' && <li onClick={() => this.handleNavClick('payments')}>Payment History</li>}
-            {this.role === 'TENANT' && <li onClick={() => this.handleNavClick('inquiries')}>Inquiry</li>}
+            {this.role === 'TENANT' && (
+              <li class={this.activeMenu === 'payments' ? 'active' : ''} onClick={() => (this.activeMenu = 'payments')}>
+                {' '}
+                <stencil-route-link url="/dashboard/payments">Payments History</stencil-route-link>
+              </li>
+            )}
+            {this.role === 'TENANT' && (
+              <li class={this.activeMenu === 'inquiry' ? 'active' : ''} onClick={() => (this.activeMenu = 'inquiry')}>
+                {' '}
+                <stencil-route-link url="/dashboard/inquiries">Inquiry</stencil-route-link>
+              </li>
+            )}
 
-            <li class={this.activeMenu === 'profile' ? 'active' : ''} onClick={() => this.handleNavClick('profile')}>
-              Profile
+            <li class={this.activeMenu === 'profile' ? 'active' : ''} onClick={() => (this.activeMenu = 'profile')}>
+              <stencil-route-link url="/dashboard/profile">Profile</stencil-route-link>
             </li>
-            <li class={this.activeMenu === 'favorites' ? 'active' : ''} onClick={() => this.handleNavClick('favorites')}>
-              ❤️
+            <li class={this.activeMenu === 'favorites' ? 'active' : ''} onClick={() => (this.activeMenu = 'profile')}>
+              <stencil-route-link url="/dashboard/favorites"> ❤️</stencil-route-link>
             </li>
           </ul>
 

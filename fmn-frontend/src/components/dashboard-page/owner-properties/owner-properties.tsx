@@ -1,6 +1,5 @@
-import { Component, h, Prop, State, Event, EventEmitter, Method } from '@stencil/core';
-import { Property } from '../property-listing/property';
-import { propertyData } from '../property-listing/property-data';
+import { Component, h, Prop, State, Event, EventEmitter } from '@stencil/core';
+import { Property } from '../../../models/interfaces';
 
 @Component({
   tag: 'owner-properties',
@@ -10,48 +9,39 @@ import { propertyData } from '../property-listing/property-data';
 export class OwnerProperties {
   @State() properties: Property[] = [];
   @State() showAddModal = false;
-  @Prop() user :number;
+  @Prop() user: number;
 
-  @Event() changeNav : EventEmitter<string>;
+  @Event() changeNav: EventEmitter<string>;
 
-  handleChangeNav (nav : string){
+  handleChangeNav(nav: string) {
     this.changeNav.emit(nav);
   }
-  // decodeToken(token: string) {
-  //   try {
-  //     const payload = token.split('.')[1];
-  //     const decoded = JSON.parse(atob(payload));
-  //     return decoded;
-  //   } catch (e) {
-  //     console.error('Invalid token', e);
-  //     return null;
-  //   }
-  // }
+
   async componentWillLoad() {
     if (!this.user) {
-    console.warn('No userId provided');
-    return;}
+      console.warn('No userId provided');
+      return;
+    }
 
-    try{
+    try {
       const token = localStorage.getItem('token');
-       if (!token) {
-         console.error('No JWT token found');
-         return;
-       }
-      const response = await fetch(`http://localhost:8080/owners/getProperties/${this.user}`,
-       { method:'GET',
-        headers : {
-          'Authorization':`Bearer ${token}`
-        }}
-      );
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
+      if (!token) {
+        console.error('No JWT token found');
+        return;
+      }
+      const response = await fetch(`http://localhost:8080/owners/getProperties/${this.user}`, {
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
       const data = await response.json();
-      this.properties = Array.isArray(data) ? data : []; 
+      this.properties = Array.isArray(data) ? data : [];
       console.log('Owner properties after fetch:', this.properties);
-    }
-    catch (err){
+    } catch (err) {
       console.error('Error fetching Properties');
     }
   }
@@ -62,7 +52,12 @@ export class OwnerProperties {
         {this.properties.length === 0 && (
           <div class="no-properties">
             <h1>No properties Listed</h1>
-            <button class="add-btn" onClick={()=>this.handleChangeNav('add-property')}>Add New Property</button>
+
+            <stencil-route-link url="/dashboard/add-property">
+              <button class="add-btn" onClick={() => this.handleChangeNav('add-property')}>
+                Add New Property{' '}
+              </button>
+            </stencil-route-link>
           </div>
         )}
 

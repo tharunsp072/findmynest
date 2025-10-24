@@ -3,6 +3,11 @@ package com.fmn.fmn_backend.config;
 import com.fmn.fmn_backend.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.hibernate.collection.spi.PersistentBag;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -20,7 +25,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @EnableWebSecurity
 public class AppConfig {
 
-    @Autowired
     private final UserRepository userRepository;
 
     @Bean
@@ -32,6 +36,19 @@ public class AppConfig {
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    public ModelMapper modelMapper() {
+        ModelMapper modelMapper = new ModelMapper();
+
+        modelMapper.addConverter(ctx -> {
+            if (ctx.getSource() == null)
+                return null;
+            return new ArrayList<>(ctx.getSource());
+        }, PersistentBag.class, List.class);
+
+        return modelMapper;
     }
 
     @Bean
